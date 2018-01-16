@@ -5,6 +5,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <script src="https://cdn.ckeditor.com/ckeditor5/1.0.0-alpha.2/classic/ckeditor.js"></script>
+    <style>
+        html,body{
+            margin:0;
+            padding:0;
+        }
+    .ck-toolbar{
+            display: none;
+    }
+   </style>
 </head>
 
 <body>
@@ -13,7 +22,10 @@
     </textarea>
     <script>
         ClassicEditor
-            .create(document.querySelector('#editor'))
+            .create(document.querySelector('#editor')).then(editor=>{
+                console.log(editor)
+                editor.document.on('change', ( evt, data)=>window.postMessage(data));
+                })
             .catch(error => {
                 console.error(error);
             });
