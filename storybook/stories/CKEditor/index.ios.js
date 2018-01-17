@@ -1,18 +1,33 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { WebView } from "react-native";
-const ckeditor = require("./ckeditor.html");
+import React, { Component } from 'react';
+// import PropTypes from 'prop-types';
+import { WebView, View, Text } from 'react-native';
 
-const Button = props => <WebView source={ckeditor} 
-onMessage={(data)=>console.warn(data)}
-style={{ flex: 1 }} />;
+const ckeditor = require('./ckeditor.html');
 
-Button.propTypes = {
-  // children: PropTypes.node.isRequired,
-  onPress: PropTypes.func
-};
-Button.defaultProps = {
-  onPress: () => {}
-};
 
-export { Button as default };
+export default class CKEditor extends Component {
+    constructor() {
+        super();
+        this.state = {};
+        this.onMessage = this.onMessage.bind(this);
+    }
+
+    onMessage(event) {
+        this.setState({
+            data: event.nativeEvent.data,
+        });
+    }
+
+    render() {
+        return (
+            <View style={ { flex: 1 } }>
+                <WebView
+                    source={ ckeditor }
+                    style={ { flex: 1 } }
+                    onMessage={ this.onMessage }
+                />
+                <Text>{JSON.stringify(this.state.data)}</Text>
+            </View>
+        );
+    }
+}
